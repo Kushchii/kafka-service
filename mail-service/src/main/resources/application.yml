@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: mail-service
+  data:
+    r2dbc:
+      repositories:
+        enabled: true
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5433/mail_service
+    username: root
+    password: password
+  liquibase:
+    change-log: liquibase/changelog-master.yaml
+    url: jdbc:postgresql://localhost:5433/mail_service
+    user: ${spring.r2dbc.username}
+    password: ${spring.r2dbc.password}
+  datasource:
+    hikari:
+      connection-timeout: 10000 # 10 sec
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: false
+
+  kafka:
+    bootstrap-servers: localhost:9092  # Kafka broker addresses
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      properties:
+        schema.registry.url: http://localhost:8081  # Адреса вашого Schema Registry
+        specific.avro.reader: true  # Використання конкретних Avro класів
+
+    consumer:
+      group-id: transaction-group  # Consumer group ID
+      auto-offset-reset: earliest  # Start consuming from the earliest message
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      properties:
+        schema.registry.url: http://localhost:8081  # Schema Registry address
+        specific.avro.reader: true  # Use specific Avro classes

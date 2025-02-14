@@ -1,0 +1,19 @@
+{
+  "type": "record",
+  "name": "TransactionPayload",
+  "namespace": "com.pdp.mail.service.kafka.dto",
+  "fields": [
+    {
+      "name": "transactionId",
+      "type": "string"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    },
+    {
+      "name": "userId",
+      "type": "string"
+    }
+  ]
+}

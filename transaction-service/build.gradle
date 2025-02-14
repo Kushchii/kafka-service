@@ -1,0 +1,65 @@
+plugins {
+    id 'java'
+    id 'com.github.davidmc24.gradle.plugin.avro' version '1.9.1'
+}
+
+repositories {
+    mavenCentral()
+    maven { url "https://packages.confluent.io/maven" }
+    maven { url "https://jitpack.io" }
+}
+
+dependencies {
+    // Анотації
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapStructVersion}"
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    implementation "org.projectlombok:lombok:${lombokVersion}"
+    implementation "org.mapstruct:mapstruct:${mapStructVersion}"
+
+    // Spring Boot стартери
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+    // PostgreSQL та R2DBC
+    runtimeOnly "org.postgresql:postgresql:${postgresqlVersion}"
+    implementation "org.postgresql:r2dbc-postgresql:${r2dbcPostgresVersion}"
+
+    // Liquibase
+    implementation "org.liquibase:liquibase-core:${liquibaseVersion}"
+    implementation 'org.springframework:spring-jdbc'
+
+    // Kafka з Avro і Schema Registry
+    implementation "org.apache.kafka:kafka-clients:3.7.1"
+    implementation 'org.springframework.kafka:spring-kafka'
+    implementation 'io.confluent:kafka-avro-serializer:7.8.0'
+    implementation "org.apache.avro:avro:1.11.4"
+
+    // Тестування
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.projectreactor:reactor-test:3.6.10'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
+    testImplementation 'org.instancio:instancio-junit:5.0.2'
+    testImplementation 'org.wiremock:wiremock-standalone:3.3.1'
+    testImplementation "org.testcontainers:postgresql:${testContainersVersion}"
+    testImplementation "org.testcontainers:kafka:${testContainersVersion}"
+    testImplementation "com.github.christophschubert:cp-testcontainers:${cpTestContainers}"
+    testImplementation 'org.springframework.kafka:spring-kafka-test'
+}
+
+bootJar {
+    layered {
+        enabled = true
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+tasks.named('compileJava') {
+    dependsOn tasks.named('generateAvroJava')
+}

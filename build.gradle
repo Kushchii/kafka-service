@@ -1,0 +1,44 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version "${springBootVersion}"
+    id 'io.spring.dependency-management' version "${springDependencyManagementVersion}"
+    id 'idea'
+
+    id 'jacoco'
+    id "com.github.ben-manes.versions" version "${versionsPluginVersion}"
+}
+
+group = 'com.pdp.transaction'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+    gradlePluginPortal()
+    maven {
+        url = uri("https://packages.confluent.io/maven/")
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'jacoco'
+
+    java {
+        sourceCompatibility = '21'
+    }
+
+    bootJar {
+        layered {
+            enabled = true
+        }
+    }
+
+    // Enable annotationProcessor usage
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+}
