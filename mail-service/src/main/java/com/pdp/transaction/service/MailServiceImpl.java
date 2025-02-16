@@ -22,6 +22,7 @@ public class MailServiceImpl implements MailService {
     public Mono<MailResponse> mails(MailRequest request) {
         var entity = mailMapper.toEntity(request);
         return mailsRepository.save(entity)
+                .doOnNext(mail -> log.info("Mail with id: {} was saved", mail.getUserId()))
                 .flatMap(mail -> Mono.just(new MailResponse("Mail saved successfully")));
     }
 }

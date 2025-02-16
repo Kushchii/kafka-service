@@ -22,20 +22,20 @@ spring:
       fail-on-unknown-properties: false
 
   kafka:
-    bootstrap-servers: localhost:9092  # Kafka broker addresses
+    bootstrap-servers: localhost:9092
 
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
       properties:
-        schema.registry.url: http://localhost:8081  # Адреса вашого Schema Registry
-        specific.avro.reader: true  # Використання конкретних Avro класів
+        schema.registry.url: http://localhost:8081
+        specific.avro.reader: true
 
     consumer:
-      group-id: transaction-group  # Consumer group ID
-      auto-offset-reset: earliest  # Start consuming from the earliest message
+      group-id: transaction-group
+      auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
       properties:
-        schema.registry.url: http://localhost:8081  # Schema Registry address
-        specific.avro.reader: true  # Use specific Avro classes
+        schema.registry.url: http://localhost:8081
+        specific.avro.reader: true

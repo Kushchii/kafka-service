@@ -39,6 +39,8 @@ dependencies {
     testImplementation 'org.instancio:instancio-junit:5.0.2'
     testImplementation 'org.wiremock:wiremock-standalone:3.3.1'
     testImplementation "com.github.christophschubert:cp-testcontainers:${cpTestContainers}"
+    testImplementation "org.testcontainers:kafka:${testContainersVersion}"
+    testImplementation 'org.springframework.kafka:spring-kafka-test'
 
     testImplementation 'org.testcontainers:postgresql:1.19.7'
 
